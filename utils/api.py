@@ -73,6 +73,12 @@ def sendPlainText(obj):
                 for file in os.listdir(outpath):
                     n_zip.write(os.path.join(outpath, file))
 
+            attach = MIMEBase('application', 'zip')
+            attach.set_payload(zf.read())
+            encoders.encode_base64(attach)
+            attach.add_header('Content-Disposition', 'attachment', filename=dir + '_zip.zip')
+            msg.attach(attach)
+
     result = {}
     smtpclient = None
     try:
