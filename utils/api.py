@@ -5,6 +5,7 @@ import smtplib
 import ssl
 import shutil
 import datetime
+import zipfile
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -19,6 +20,7 @@ def sendPlainText(obj):
     body = obj['body']
     charset = obj['charset']
     type = obj['type']
+    zip = obj['zip']
 
     msg = MIMEMultipart()
     if type == 'html':
@@ -51,18 +53,25 @@ def sendPlainText(obj):
     outpath = None
     if obj['files'] is not None and len(obj['files']) > 0:
         dt = datetime.datetime.now()
-        outpath = './upload/' + dt.strftime('%Y%m%d%H%M%S.%f')[:-3]
+        dir = dt.strftime('%Y%m%d%H%M%S.%f')[:-3]
+        outpath = './upload/' + dir
         if os.path.isdir(outpath) == False:
             os.mkdir(outpath)
         for o in obj['files']:
             filename = o['name']
             outfile = outpath + '/' + filename
             convert_b64_string_to_file(o['data'], outfile)
-            ext = filename.split(".")[-1]
-            if os.path.isfile(outfile):
-                attach = MIMEApplication(open(outfile, 'rb').read(), _subtype=ext)
-                attach.add_header('Content-Disposition', 'attachment', filename=filename)
-                msg.attach(attach)
+            if zip is None or zip == False:
+                ext = filename.split(".")[-1]
+                if os.path.isfile(outfile):
+                    attach = MIMEApplication(open(outfile, 'rb').read(), _subtype=ext)
+                    attach.add_header('Content-Disposition', 'attachment', filename=filename)
+                    msg.attach(attach)
+
+        if zip is not None and zip == True:
+            with zipfile.ZipFile(dir + '_zip.zip','w', compression=zipfile.ZIP_STORED) as n_zip:
+                for file in os.listdir(outpath):
+                    n_zip.write(os.path.join(outpath, file))
 
     result = {}
     smtpclient = None

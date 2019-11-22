@@ -28,8 +28,10 @@ def send():
     obj = {}
     obj['uid'] = 'uId'
     obj['charset'] = 'utf-8'
-    obj['type'] = 'plain' # 'plain'
-    obj['subject'] = 'Subject'
+    obj['type'] = 'html' # 'plain'
+    obj['zip'] = True
+    obj['zippw'] = '1234'
+    obj['subject'] = 'SC API Mail !!!'
     obj['from'] = 'nguyenhuong791123@gmail.com'
     obj['to'] = 'huongnv@vnext.vn'
     obj['cc'] = ''#'nguyenhuong791123@gmail.com'
