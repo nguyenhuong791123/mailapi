@@ -22,18 +22,25 @@ def index():
 
 @app.route('/send', methods=[ 'POST' ])
 def send():
-    auth = request.authorization
-    # print(auth)
+    authorization = request.authorization
+    # print(authorization)
+
+    auth = {}
+    auth['host'] = 'smtp.gmail.com'
+    auth['port'] = 587
+    auth['auth'] = 'starttls'
+    auth['username'] = 'nguyenhuong791123@gmail.com'
+    auth['password'] = 'huong080'
 
     obj = {}
     obj['uid'] = 'uId'
     obj['charset'] = 'utf-8'
     obj['type'] = 'html' # 'plain'
-    obj['zip'] = True
+    obj['zip'] = False
     obj['zippw'] = '1234'
     obj['subject'] = 'SC API Mail !!!'
     obj['from'] = 'nguyenhuong791123@gmail.com'
-    obj['to'] = 'huongnv@vnext.vn'
+    obj['to'] = 'nguyenhuong791123@gmail.com'
     obj['cc'] = ''#'nguyenhuong791123@gmail.com'
     obj['bcc'] = ''#'huongnv@porters.jp'
     obj['body'] = """\
@@ -57,7 +64,7 @@ def send():
             },
     ]
 
-    return jsonify(sendPlainText(obj)), 200
+    return jsonify(sendPlainText(auth, obj)), 200
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=8082)

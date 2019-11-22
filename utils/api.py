@@ -5,22 +5,24 @@ import smtplib
 import ssl
 import shutil
 import datetime
-import zipfile
+import pyminizip
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
 from email.utils import formatdate
 from email import encoders
 
 def receive():
     print('Receive Mail !!!')
 
-def sendPlainText(obj):
+def sendPlainText(auth, obj):
     print('Send Mail Start[ ' + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f') + ' ]')
     body = obj['body']
     charset = obj['charset']
     type = obj['type']
     zip = obj['zip']
+    zippw = obj['zippw']
 
     msg = MIMEMultipart()
     if type == 'html':
@@ -51,10 +53,12 @@ def sendPlainText(obj):
     msg["Date"] = formatdate(localtime = True)
 
     outpath = None
+    updir = './upload/'
+    zipname = None
     if obj['files'] is not None and len(obj['files']) > 0:
         dt = datetime.datetime.now()
         dir = dt.strftime('%Y%m%d%H%M%S.%f')[:-3]
-        outpath = './upload/' + dir
+        outpath = updir + dir
         if os.path.isdir(outpath) == False:
             os.mkdir(outpath)
         for o in obj['files']:
@@ -69,21 +73,31 @@ def sendPlainText(obj):
                     msg.attach(attach)
 
         if zip is not None and zip == True:
-            with zipfile.ZipFile(dir + '_zip.zip','w', compression=zipfile.ZIP_STORED) as n_zip:
-                for file in os.listdir(outpath):
-                    n_zip.write(os.path.join(outpath, file))
+            os.chdir(updir)
+            zipname = dir + '_zip.zip'
+            if zippw is None or len(zippw) <= 0:
+                with zipfile.ZipFile(zipname,'w', compression=zipfile.ZIP_STORED)as n_zip:
+                    for file in os.listdir(dir):
+                        n_zip.write(os.path.join(dir, file))
+            else:
+                src = []
+                level = 4
+                for file in os.listdir(dir):
+                    src.append(os.path.join(dir, file))
+                pyminizip.compress_multiple(src, [], zipname, zippw, level)
 
+            os.chdir('../')
             attach = MIMEBase('application', 'zip')
-            attach.set_payload(zf.read())
+            attach.set_payload(open(updir + zipname, 'rb').read())
             encoders.encode_base64(attach)
-            attach.add_header('Content-Disposition', 'attachment', filename=dir + '_zip.zip')
+            attach.add_header('Content-Disposition', 'attachment', filename=zipname)
             msg.attach(attach)
 
     result = {}
     smtpclient = None
     try:
-        host = "smtp.gmail.com"
-        nego_combo = ("starttls", 587)
+        host = auth['host'] # "smtp.gmail.com"
+        nego_combo = (auth['auth'], auth['port']) # ("starttls", 587)
         if nego_combo[0] == "no-encrypt":
             smtpclient = smtplib.SMTP(host, nego_combo[1], timeout=10)
         elif nego_combo[0] == "starttls":
@@ -96,14 +110,10 @@ def sendPlainText(obj):
             smtpclient = smtplib.SMTP_SSL(host, nego_combo[1], timeout=10, context=context)
         smtpclient.set_debuglevel(2)
 
-        username = "nguyenhuong791123@gmail.com"
-        password = "huong080"
-        smtpclient.login(username, password)
-
+        smtpclient.login(auth['username'], auth['password'])
         smtpclient.send_message(msg)
         result['flag'] = True
         result['msg'] = obj['from'] + 'から' + obj['to'] + 'へメールを送信しました。'
-
     except Exception as e:
         result['flag'] = False
         result['msg'] = str(e)
@@ -112,6 +122,8 @@ def sendPlainText(obj):
             smtpclient.quit()
         if outpath is not None and os.path.isdir(outpath):
             shutil.rmtree(outpath)
+        if zip is not None and zip == True and zipname is not None and os.path.isfile(updir + zipname):
+            os.remove(updir + zipname)
 
     print('Send Mail End[ ' + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f') + ' ]')
     return result
