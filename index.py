@@ -28,7 +28,7 @@ def send():
     obj = {}
     obj['uid'] = 'uId'
     obj['charset'] = 'utf-8'
-    obj['type'] = 'html' # 'plain'
+    obj['type'] = 'plain' # 'plain'
     obj['subject'] = 'Subject'
     obj['from'] = 'nguyenhuong791123@gmail.com'
     obj['to'] = 'huongnv@vnext.vn'

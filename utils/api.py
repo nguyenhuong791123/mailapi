@@ -5,6 +5,7 @@ import smtplib
 import ssl
 import shutil
 import datetime
+from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.utils import formatdate
@@ -45,20 +46,22 @@ def sendPlainText(obj):
     msg["Cc"] = obj['cc']
     msg["Bcc"] = obj['bcc']
     msg["Date"] = formatdate(localtime = True)
-    print(msg)
 
     outpath = None
-    # if obj['files'] is not None and len(obj['files']) > 0:
-    #     dt = datetime.datetime.now()
-    #     outpath = './upload/' + dt.strftime('%Y%m%d%H%M%S.%f')[:-3]
-    #     if os.path.isdir(outpath) == False:
-    #         os.mkdir(outpath)
-    #     for o in obj['files']:
-    #         outfile = outpath + '/' + o['name']
-    #         convert_b64_string_to_file(o['data'], outfile)
-    #         if os.path.isfile(outfile):
-    #             msg.set_payload(open(outfile, 'rb').read())
-    #             msg.add_header('Content-Disposition', 'attachment; filename=' + o['name'])
+    if obj['files'] is not None and len(obj['files']) > 0:
+        dt = datetime.datetime.now()
+        outpath = './upload/' + dt.strftime('%Y%m%d%H%M%S.%f')[:-3]
+        if os.path.isdir(outpath) == False:
+            os.mkdir(outpath)
+        for o in obj['files']:
+            filename = o['name']
+            outfile = outpath + '/' + filename
+            convert_b64_string_to_file(o['data'], outfile)
+            ext = filename.split(".")[-1]
+            if os.path.isfile(outfile):
+                attach = MIMEApplication(open(outfile, 'rb').read(), _subtype=ext)
+                attach.add_header('Content-Disposition', 'attachment', filename=filename)
+                msg.attach(attach)
 
     result = {}
     smtpclient = None
