@@ -15,6 +15,7 @@ def receive():
     print('Receive Mail !!!')
 
 def sendPlainText(obj):
+    print('Send Mail Start[ ' + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f') + ' ]')
     body = obj['body']
     charset = obj['charset']
     type = obj['type']
@@ -97,6 +98,7 @@ def sendPlainText(obj):
         if outpath is not None and os.path.isdir(outpath):
             shutil.rmtree(outpath)
 
+    print('Send Mail End[ ' + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f') + ' ]')
     return result
 
 def convert_b64_string_to_file(s, outfile_path):
