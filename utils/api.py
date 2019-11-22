@@ -5,6 +5,7 @@ import smtplib
 import ssl
 import shutil
 import datetime
+import zipfile
 import pyminizip
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
