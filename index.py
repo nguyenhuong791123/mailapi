@@ -36,8 +36,8 @@ def send():
     obj['uid'] = 'uId'
     obj['charset'] = 'utf-8'
     obj['type'] = 'html' # 'plain'
-    obj['zip'] = False
-    obj['zippw'] = '1234'
+    obj['zip'] = True
+    obj['zippw'] = ''
     obj['subject'] = 'SC API Mail !!!'
     obj['from'] = 'nguyenhuong791123@gmail.com'
     obj['to'] = 'nguyenhuong791123@gmail.com'
