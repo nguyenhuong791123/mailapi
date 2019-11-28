@@ -1,0 +1,46 @@
+{
+    "auth": {
+        "host": "smtp.gmail.com"
+        ,"port": 587
+        ,"auth": "starttls"
+        ,"username": "nguyenhuong791123@gmail.com"
+        ,"password": "huong080"
+    }
+    ,"mails": [
+        {
+            "type": "html"
+            ,"charset": "utf-8"
+            ,"zip": true
+            ,"zippw": ""
+            ,"subject": "SC API Mail !!!"
+            ,"from": "nguyenhuong791123@gmail.com"
+            ,"to": "huongnv@vnext.vn"
+            ,"cc": ""
+            ,"bcc": ""
+            ,"body": "<html><body><p>Hi!<br>How are you?<br>Here is the <a href='https://www.python.org'>link</a> you wanted.</p></body></html>"
+            ,"files": [
+                {
+                    "filename": "001-home.svg"
+                    ,"data": "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0ZWQgYnkgSWNvTW9vbi5pbyAtLT4KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KPHBhdGggZmlsbD0iIzAwMDAwMCIgZD0iTTE2IDkuMjI2bC04LTYuMjEtOCA2LjIxdi0yLjUzMmw4LTYuMjEgOCA2LjIxek0xNCA5djZoLTR2LTRoLTR2NGgtNHYtNmw2LTQuNXoiPjwvcGF0aD4KPC9zdmc+Cg=="
+                }
+            ]
+        }
+        ,{
+            "type": "plain"
+            ,"zip": true
+            ,"zippw": ""
+            ,"subject": "SC API Mail 02!!!"
+            ,"from": "nguyenhuong791123@gmail.com"
+            ,"to": "huongnv@vnext.vn"
+            ,"cc": ""
+            ,"bcc": ""
+            ,"body": "<html><body><p>Hi!<br>How are you?<br>Here is the <a href='https://www.python.org'>link</a> you wanted.</p></body></html>"
+            ,"files": [
+                {
+                    "filename": "001-home.svg"
+                    ,"data": "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0ZWQgYnkgSWNvTW9vbi5pbyAtLT4KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KPHBhdGggZmlsbD0iIzAwMDAwMCIgZD0iTTE2IDkuMjI2bC04LTYuMjEtOCA2LjIxdi0yLjUzMmw4LTYuMjEgOCA2LjIxek0xNCA5djZoLTR2LTRoLTR2NGgtNHYtNmw2LTQuNXoiPjwvcGF0aD4KPC9zdmc+Cg=="
+                }
+            ]
+        }
+    ]
+}
