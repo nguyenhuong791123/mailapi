@@ -35,7 +35,16 @@ def sendMail(auth, objs):
         msg = getMIMEMultipart(obj)
         outpath = None
         updir = './upload/'
-        msg = addTemps(msg, obj, updir, outpath)
+        files = obj['files']
+        if is_exist(obj, 'files') == False or len(files) <= 0:
+            return msg
+
+        dt = datetime.datetime.now()
+        dir = dt.strftime('%Y%m%d%H%M%S.%f')[:-3]
+        outpath = updir + dir
+        if os.path.isdir(outpath) == False:
+            os.mkdir(outpath)
+        msg = addTemps(msg, obj, dir, updir, outpath)
 
         result = {}
         smtpclient = None
@@ -68,8 +77,8 @@ def sendMail(auth, objs):
                 smtpclient.quit()
             if outpath is not None and os.path.isdir(outpath):
                 shutil.rmtree(outpath)
-            if zip is not None and zip == True and zipname is not None and os.path.isfile(updir + zipname):
-                os.remove(updir + zipname)
+            if zip is not None and zip == True and os.path.isfile(updir + dir + '_zip.zip'):
+                os.remove(updir + dir + '_zip.zip')
 
         results.append(result)
 
@@ -114,18 +123,18 @@ def getMIMEMultipart(obj):
     msg["Date"] = formatdate(localtime = True)
     return msg
 
-def addTemps(msg, obj, updir, outpath):
+def addTemps(msg, obj, dir, updir, outpath):
     zip = obj['zip']
     zippw = obj['zippw']
     files = obj['files']
-    if is_exist(obj, 'files') == False or len(files) <= 0:
-        return msg
+    # if is_exist(obj, 'files') == False or len(files) <= 0:
+    #     return msg
 
-    dt = datetime.datetime.now()
-    dir = dt.strftime('%Y%m%d%H%M%S.%f')[:-3]
-    outpath = updir + dir
-    if os.path.isdir(outpath) == False:
-        os.mkdir(outpath)
+    # dt = datetime.datetime.now()
+    # dir = dt.strftime('%Y%m%d%H%M%S.%f')[:-3]
+    # outpath = updir + dir
+    # if os.path.isdir(outpath) == False:
+    #     os.mkdir(outpath)
     # print(files)
     for o in files:
         filename = o['filename']
@@ -152,8 +161,8 @@ def addTemps(msg, obj, updir, outpath):
                 src.append(os.path.join(dir, file))
             pyminizip.compress_multiple(src, [], zipname, zippw, level)
 
+        os.chdir('../')
         if os.path.isfile(updir + zipname):
-            os.chdir('../')
             attach = MIMEBase('application', 'zip')
             attach.set_payload(open(updir + zipname, 'rb').read())
             encoders.encode_base64(attach)
