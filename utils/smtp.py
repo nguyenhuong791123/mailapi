@@ -15,9 +15,6 @@ from email.utils import formatdate
 from email import encoders
 from .utils import *
 
-def receive():
-    print('Receive Mail !!!')
-
 def sendMail(auth, objs):
     print('Send Mail Start[ ' + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f') + ' ]')
     results = []
@@ -127,15 +124,6 @@ def addTemps(msg, obj, dir, updir, outpath):
     zip = obj['zip']
     zippw = obj['zippw']
     files = obj['files']
-    # if is_exist(obj, 'files') == False or len(files) <= 0:
-    #     return msg
-
-    # dt = datetime.datetime.now()
-    # dir = dt.strftime('%Y%m%d%H%M%S.%f')[:-3]
-    # outpath = updir + dir
-    # if os.path.isdir(outpath) == False:
-    #     os.mkdir(outpath)
-    # print(files)
     for o in files:
         filename = o['filename']
         outfile = outpath + '/' + filename
