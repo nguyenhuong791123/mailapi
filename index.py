@@ -4,6 +4,7 @@ from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS
 from utils.smtp import *
 from utils.pop3 import *
+from utils.imap4 import *
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
@@ -21,6 +22,26 @@ def index():
     print(auth)
 
     return render_template('index.html')
+
+@app.route('/imap4', methods=[ 'POST' ])
+def imap4():
+    authorization = request.authorization
+    # print(authorization)
+
+    auth = {}
+    if request.method == 'POST':
+        if request.json is not None:
+            if is_json(request.json):
+                auth = request.json.get('auth')
+        if auth is None or str(auth) == '{}':
+            data = open('data.json', 'r')
+            info = json.load(data)
+            auth = info['auth']
+
+    print(auth)
+    result = {}
+    result['result'] = get_imap4(auth)
+    return jsonify(result), 200
 
 @app.route('/pop3', methods=[ 'POST' ])
 def pop3():
