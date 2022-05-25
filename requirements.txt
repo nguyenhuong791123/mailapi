@@ -13,7 +13,7 @@ keyrings.alt==3.0
 MarkupSafe==1.1.1
 pycrypto==2.6.1
 pygobject==3.26.1
-PyJWT==1.7.1
+PyJWT==2.4.0
 pyminizip==0.2.4
 pyxdg==0.25
 SecretStorage==2.3.1
