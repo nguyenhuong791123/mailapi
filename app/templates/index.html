@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>Mail API v{{ config.VERSION }}</title>
+  </head>
+  <body>
+    <h1>Mail API v{{ config.VERSION }}</h1>
+    <ul>
+      <li>POST /send — SMTP 送信</li>
+      <li>POST /imap4 — IMAP 受信（未読、既読にはしない）</li>
+      <li>POST /pop3 — POP3 受信</li>
+      <li>GET /health — 稼働確認</li>
+    </ul>
+  </body>
+</html>
